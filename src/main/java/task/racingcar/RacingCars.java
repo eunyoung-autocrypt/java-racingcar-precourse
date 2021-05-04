@@ -20,14 +20,18 @@ public class RacingCars {
 				.map(String::trim)
 				.collect(Collectors.toList());
 
-		if (splitNames.isEmpty()) {
-			throw new IllegalArgumentException(ErrorMessage.EMPTY_NAMES.getMessage());
-		} else if (hasInvalidCarName(splitNames)) {
-			throw new IllegalArgumentException(ErrorMessage.OVER_NAME_LENGTH.getMessage());
-		}
+		validateCarNames(splitNames);
 
 		this.racingCars = splitNames.stream().map(RacingCar::new).collect(Collectors.toList());
 		this.tryCount = tryCount;
+	}
+
+	private void validateCarNames(List<String> carNames) {
+		if (carNames.isEmpty()) {
+			throw new IllegalArgumentException(ErrorMessage.EMPTY_NAMES.getMessage());
+		} else if (hasInvalidCarName(carNames)) {
+			throw new IllegalArgumentException(ErrorMessage.OVER_NAME_LENGTH.getMessage());
+		}
 	}
 
 	private boolean hasInvalidCarName(List<String> splitNames) {
@@ -36,7 +40,7 @@ public class RacingCars {
 	}
 
 	public void play() {
-		for (int count = 0; count<this.tryCount; count++) {
+		for (int count = 0; count < this.tryCount; count++) {
 			for (RacingCar racingCar : this.racingCars) {
 				racingCar.play(RandomNumber.generate());
 				racingCar.printRaceState();
