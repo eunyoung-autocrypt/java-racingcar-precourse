@@ -2,12 +2,18 @@ package task.racingcar;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RacingCars {
 	private final List<RacingCar> racingCars;
 	private final int tryCount;
+
+	public RacingCars(List<RacingCar> racingCars, int tryCount) {
+		this.racingCars = racingCars;
+		this.tryCount = tryCount;
+	}
 
 	public RacingCars(String carNames, int tryCount) {
 		List<String> splitNames = Arrays.stream(carNames.split(","))
@@ -37,6 +43,17 @@ public class RacingCars {
 			}
 			System.out.println();
 		}
+	}
+
+	public String getWinnerNames() {
+		int maxMove = this.racingCars.stream()
+				.mapToInt(RacingCar::getMoveCount).max()
+				.orElseThrow(() -> new NoSuchElementException(ErrorMessage.NO_SUCH_MAX_RACE.getMessage()));
+
+		return this.racingCars.stream()
+				.filter(car -> car.getMoveCount() == maxMove)
+				.map(RacingCar::getName)
+				.collect(Collectors.joining(","));
 	}
 
 	public List<RacingCar> getRacingCars() {
