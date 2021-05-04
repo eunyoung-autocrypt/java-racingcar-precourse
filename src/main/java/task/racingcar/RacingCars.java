@@ -29,6 +29,16 @@ public class RacingCars {
 		return overNameLimit.isPresent();
 	}
 
+	public void play() {
+		for (int count = 0; count<this.tryCount; count++) {
+			for (RacingCar racingCar : this.racingCars) {
+				racingCar.play(RandomNumber.generate());
+				racingCar.printRaceState();
+			}
+			System.out.println();
+		}
+	}
+
 	public List<RacingCar> getRacingCars() {
 		return racingCars;
 	}
